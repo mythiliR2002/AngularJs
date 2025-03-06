@@ -4,17 +4,16 @@
     angular.module('LunchCheck', [])
         .controller('LunchCheckController', LunchCheckController);
 
-    // Injecting $scope into the controller to ensure safe minification
+    // Protect the code from minification by injecting $scope
     LunchCheckController.$inject = ['$scope'];
 
     function LunchCheckController($scope) {
         var lunch = this;
-
         lunch.items = "";
         lunch.message = "";
         lunch.messageStyle = {};
 
-        // Function to check the lunch items
+        // Function to check the number of lunch items
         lunch.checkLunch = function() {
             if (lunch.items === "" || lunch.items.trim() === "") {
                 lunch.message = "Please enter data first";
@@ -22,7 +21,7 @@
             } else {
                 var itemList = lunch.items.split(",");
                 var itemCount = itemList.filter(function(item) {
-                    return item.trim() !== "";  // Filter out empty items
+                    return item.trim() !== "";  // Remove empty items
                 }).length;
 
                 if (itemCount <= 3) {
