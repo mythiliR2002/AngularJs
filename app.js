@@ -1,37 +1,52 @@
 (function() {
     'use strict';
 
-    angular.module('LunchCheck', [])
-        .controller('LunchCheckController', LunchCheckController);
+    angular.module('ShoppingListCheckOff', [])
+    .controller('ToBuyController', ToBuyController)
+    .controller('AlreadyBoughtController', AlreadyBoughtController)
+    .service('ShoppingListCheckOffService', ShoppingListCheckOffService);
 
-    // Protect the code from minification by injecting $scope
-    LunchCheckController.$inject = ['$scope'];
+    ToBuyController.$inject = ['ShoppingListCheckOffService'];
+    function ToBuyController(ShoppingListCheckOffService) {
+        var toBuy = this;
+        toBuy.items = ShoppingListCheckOffService.getToBuyItems();
+        
+        toBuy.buyItem = function(itemIndex) {
+            ShoppingListCheckOffService.buyItem(itemIndex);
+        };
+    }
 
-    function LunchCheckController($scope) {
-        var lunch = this;
-        lunch.items = "";
-        lunch.message = "";
-        lunch.messageStyle = {};
+    AlreadyBoughtController.$inject = ['ShoppingListCheckOffService'];
+    function AlreadyBoughtController(ShoppingListCheckOffService) {
+        var alreadyBought = this;
+        alreadyBought.items = ShoppingListCheckOffService.getAlreadyBoughtItems();
+    }
 
-        // Function to check the number of lunch items
-        lunch.checkLunch = function() {
-            if (lunch.items === "" || lunch.items.trim() === "") {
-                lunch.message = "Please enter data first";
-                lunch.messageStyle = { "color": "red" };
-            } else {
-                var itemList = lunch.items.split(",");
-                var itemCount = itemList.filter(function(item) {
-                    return item.trim() !== "";  // Remove empty items
-                }).length;
+    function ShoppingListCheckOffService() {
+        var service = this;
+        
+        var toBuyItems = [
+            { name: "cookies", quantity: 10 },
+            { name: "chips", quantity: 5 },
+            { name: "soda", quantity: 2 },
+            { name: "milk", quantity: 1 },
+            { name: "bread", quantity: 3 }
+        ];
 
-                if (itemCount <= 3) {
-                    lunch.message = "Enjoy!";
-                    lunch.messageStyle = { "color": "green" };
-                } else {
-                    lunch.message = "Too much!";
-                    lunch.messageStyle = { "color": "green" };
-                }
-            }
+        var alreadyBoughtItems = [];
+
+        service.getToBuyItems = function() {
+            return toBuyItems;
+        };
+
+        service.getAlreadyBoughtItems = function() {
+            return alreadyBoughtItems;
+        };
+
+        service.buyItem = function(itemIndex) {
+            var item = toBuyItems[itemIndex];
+            toBuyItems.splice(itemIndex, 1);
+            alreadyBoughtItems.push(item);
         };
     }
 })();
