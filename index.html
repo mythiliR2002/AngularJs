@@ -1,24 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="LunchCheck">
+<html lang="en" ng-app="ShoppingListCheckOff">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lunch Check</title>
+    <title>Shopping List Check-Off</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="app.js"></script>
 </head>
-<body ng-controller="LunchCheckController as lunch">
+<body ng-controller="ToBuyController as toBuyCtrl">
 
-    <div>
-        <h1>Lunch Check</h1>
-        <label for="lunchItems">Enter comma-separated items:</label>
-        <input type="text" id="lunchItems" ng-model="lunch.items">
-        <button ng-click="lunch.checkLunch()">Check If Too Much</button>
-        
-        <div class="message" ng-if="lunch.message">
-            <p ng-style="lunch.messageStyle">{{ lunch.message }}</p>
+    <div class="container">
+        <div class="to-buy">
+            <h3>To Buy</h3>
+            <ul>
+                <li ng-repeat="item in toBuyCtrl.items">
+                    Buy {{ item.quantity }} {{ item.name }}
+                    <button ng-click="toBuyCtrl.buyItem($index)">Bought</button>
+                </li>
+            </ul>
+            <div ng-if="toBuyCtrl.items.length === 0">Everything is bought!</div>
+        </div>
+
+        <div class="already-bought" ng-controller="AlreadyBoughtController as alreadyBoughtCtrl">
+            <h3>Already Bought</h3>
+            <ul>
+                <li ng-repeat="item in alreadyBoughtCtrl.items">
+                    Bought {{ item.quantity }} {{ item.name }}
+                </li>
+            </ul>
+            <div ng-if="alreadyBoughtCtrl.items.length === 0">Nothing bought yet</div>
         </div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="app.js"></script>
 </body>
 </html>
