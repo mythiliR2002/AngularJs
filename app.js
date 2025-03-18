@@ -1,52 +1,76 @@
-(function() {
-    'use strict';
+(function () {
+  'use strict';
 
-    angular.module('ShoppingListCheckOff', [])
-    .controller('ToBuyController', ToBuyController)
-    .controller('AlreadyBoughtController', AlreadyBoughtController)
-    .service('ShoppingListCheckOffService', ShoppingListCheckOffService);
+  angular.module('NarrowItDownApp', [])
+    .controller('NarrowItDownController', NarrowItDownController)
+    .service('MenuSearchService', MenuSearchService)
+    .directive('foundItems', FoundItemsDirective);
 
-    ToBuyController.$inject = ['ShoppingListCheckOffService'];
-    function ToBuyController(ShoppingListCheckOffService) {
-        var toBuy = this;
-        toBuy.items = ShoppingListCheckOffService.getToBuyItems();
-        
-        toBuy.buyItem = function(itemIndex) {
-            ShoppingListCheckOffService.buyItem(itemIndex);
-        };
-    }
+  NarrowItDownController.$inject = ['MenuSearchService'];
+  function NarrowItDownController(MenuSearchService) {
+    var ctrl = this;
+    ctrl.searchTerm = '';
+    ctrl.foundItems = [];
 
-    AlreadyBoughtController.$inject = ['ShoppingListCheckOffService'];
-    function AlreadyBoughtController(ShoppingListCheckOffService) {
-        var alreadyBought = this;
-        alreadyBought.items = ShoppingListCheckOffService.getAlreadyBoughtItems();
-    }
+    ctrl.narrowDown = function () {
+      if (!ctrl.searchTerm) {
+        ctrl.foundItems = [];
+        return;
+      }
 
-    function ShoppingListCheckOffService() {
-        var service = this;
-        
-        var toBuyItems = [
-            { name: "cookies", quantity: 10 },
-            { name: "chips", quantity: 5 },
-            { name: "soda", quantity: 2 },
-            { name: "milk", quantity: 1 },
-            { name: "bread", quantity: 3 }
-        ];
+      MenuSearchService.getMatchedMenuItems(ctrl.searchTerm)
+        .then(function (result) {
+          ctrl.foundItems = result;
+        })
+        .catch(function (error) {
+          console.error('Error while fetching menu items:', error);
+        });
+    };
 
-        var alreadyBoughtItems = [];
+    ctrl.removeItem = function (index) {
+      ctrl.foundItems.splice(index, 1);
+    };
+  }
 
-        service.getToBuyItems = function() {
-            return toBuyItems;
-        };
+  MenuSearchService.$inject = ['$http'];
+  function MenuSearchService($http) {
+    var service = this;
 
-        service.getAlreadyBoughtItems = function() {
-            return alreadyBoughtItems;
-        };
+    service.getMatchedMenuItems = function (searchTerm) {
+      return $http({
+        method: 'GET',
+        url: 'https://coursera-jhu-default-rtdb.firebaseio.com/menu_items.json'
+      }).then(function (response) {
+        var allItems = response.data;
+        var foundItems = [];
 
-        service.buyItem = function(itemIndex) {
-            var item = toBuyItems[itemIndex];
-            toBuyItems.splice(itemIndex, 1);
-            alreadyBoughtItems.push(item);
-        };
-    }
+        for (var key in allItems) {
+          if (allItems[key].description && allItems[key].description.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
+            foundItems.push(allItems[key]);
+          }
+        }
+
+        return foundItems;
+      });
+    };
+  }
+
+  function FoundItemsDirective() {
+    var ddo = {
+      restrict: 'E',
+      templateUrl: 'found-items.template.html',
+      scope: {
+        found: '<',
+        onRemove: '&'
+      },
+      controller: FoundItemsDirectiveController,
+      controllerAs: 'foundCtrl',
+      bindToController: true
+    };
+    return ddo;
+  }
+
+  function FoundItemsDirectiveController() {
+    var foundCtrl = this;
+  }
 })();
