@@ -1,21 +1,40 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+  font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
 .container {
-    display: flex;
-    justify-content: space-between;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.to-buy, .already-bought {
-    width: 45%;
-}
-
-h3 {
-    text-align: center;
+input[type="text"] {
+  padding: 5px;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 button {
-    margin-left: 10px;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+}
+
+h2 {
+  margin-top: 20px;
 }
