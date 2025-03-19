@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="MenuApp">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Food Menu Finder</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@uirouter/angularjs@1.0.29/release/angular-ui-router.min.js"></script>
+    <script src="menuapp.module.js"></script>
+    <script src="data.module.js"></script>
+    <script src="menudata.service.js"></script>
+    <script src="categories.component.js"></script>
+    <script src="items.component.js"></script>
+    <script src="routes.js"></script>
 </head>
 <body>
-
-  <div class="container">
-    <h2>Food Menu Finder</h2>
-    <input type="text" id="foodInput" placeholder="Enter food type (e.g., chicken or mutton)">
-    <button id="submitBtn">Narrow It Down</button>
-
-    <ul class="menu-list" id="menuList"></ul>
-  </div>
-
-  <script src="app.js"></script>
+    <div ui-view></div>
 </body>
 </html>
