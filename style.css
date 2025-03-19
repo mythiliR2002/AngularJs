@@ -1,3 +1,4 @@
+/* Basic styling for the app */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -5,25 +6,8 @@ body {
     background-color: #f9f9f9;
 }
 
-h1, h2 {
+h1, h2, h3 {
     color: #333;
-}
-
-#app {
-    padding: 20px;
-}
-
-a {
-    color: #007BFF;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-.hidden {
-    display: none;
 }
 
 ul {
@@ -32,5 +16,26 @@ ul {
 }
 
 li {
-    padding: 8px 0;
+    margin: 10px 0;
+}
+
+a {
+    text-decoration: none;
+    color: #0066cc;
+    font-size: 18px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    padding: 20px;
+}
+
+button {
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
 }
