@@ -4,7 +4,77 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Food Menu Finder</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #e0f7fa; /* Light blue background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #0277bd; /* Deep blue text */
+    }
+    .container {
+      width: 60%;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    h2 {
+      color: #0288d1; /* Bright blue header */
+    }
+    input {
+      padding: 12px;
+      width: 60%;
+      border: 2px solid #0288d1;
+      border-radius: 4px;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 12px 20px;
+      background-color: #0288d1; /* Blue button */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0277bd; /* Darker blue when hovered */
+    }
+    .menu-list {
+      margin-top: 20px;
+      list-style-type: none;
+      padding: 0;
+    }
+    .menu-item {
+      padding: 12px;
+      background-color: #b3e5fc; /* Light blue menu items */
+      margin-bottom: 10px;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #01579b; /* Deep blue text for menu items */
+      font-size: 18px;
+    }
+    .menu-item button {
+      background-color: #f44336; /* Red color for the 'I don't want this' button */
+      color: white;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .menu-item button:hover {
+      background-color: #d32f2f; /* Darker red when hovered */
+    }
+  </style>
 </head>
 <body>
 
@@ -16,6 +86,51 @@
     <ul class="menu-list" id="menuList"></ul>
   </div>
 
-  <script src="app.js"></script>
+  <script>
+    const menuData = {
+      chicken: [
+        { name: 'Chicken Biriyani', price: 270 },
+        { name: 'Chicken Fried Rice', price: 130 },
+        { name: 'Chicken Noodles', price: 130 },
+        { name: 'Chicken Kabab', price: 100 }
+      ],
+      mutton: [
+        { name: 'Mutton Biriyani', price: 270 },
+        { name: 'Mutton Fried Rice', price: 130 },
+        { name: 'Mutton Noodles', price: 130 },
+        { name: 'Mutton Kabab', price: 100 }
+      ]
+    };
+
+    const submitBtn = document.getElementById('submitBtn');
+    const foodInput = document.getElementById('foodInput');
+    const menuList = document.getElementById('menuList');
+
+    submitBtn.addEventListener('click', function() {
+      const foodType = foodInput.value.toLowerCase();
+      menuList.innerHTML = ''; // Clear previous results
+
+      if (menuData[foodType]) {
+        menuData[foodType].forEach(item => {
+          const menuItem = document.createElement('li');
+          menuItem.classList.add('menu-item');
+
+          menuItem.innerHTML = `
+            <span>${item.name} - ${item.price} Rupees</span>
+            <button onclick="hideItem(this)">I don't want this</button>
+          `;
+
+          menuList.appendChild(menuItem);
+        });
+      } else {
+        menuList.innerHTML = '<li>No menu items found for this type of food!</li>';
+      }
+    });
+
+    function hideItem(button) {
+      button.parentElement.style.display = 'none';
+    }
+  </script>
+
 </body>
 </html>
