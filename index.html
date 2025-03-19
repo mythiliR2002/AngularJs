@@ -1,34 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="MenuApp">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Menu</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
 </head>
 <body>
-    <div id="app">
-        <!-- Home View -->
-        <div id="home-view">
-            <h1>Welcome to Our Restaurant</h1>
-            <a href="#categories" id="go-to-categories">View Menu Categories</a>
-        </div>
 
-        <!-- Categories View -->
-        <div id="categories-view" class="hidden">
-            <h2>Menu Categories</h2>
-            <ul id="categories-list"></ul>
-            <a href="#" id="back-to-home">Back to Home</a>
-        </div>
+    <div ui-view></div>
 
-        <!-- Items View -->
-        <div id="items-view" class="hidden">
-            <h2>Menu Items</h2>
-            <ul id="items-list"></ul>
-            <a href="#categories" id="back-to-categories">Back to Categories</a>
-        </div>
-    </div>
+    <script src="menuapp.module.js"></script>
+    <script src="data.module.js"></script>
+    <script src="menudata.service.js"></script>
+    <script src="categories.component.js"></script>
+    <script src="items.component.js"></script>
+    <script src="routes.js"></script>
 
-    <script src="app.js"></script>
 </body>
 </html>
