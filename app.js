@@ -13,25 +13,26 @@
     ctrl.searchTerm = "";
     ctrl.found = [];
 
-    // Function to narrow down menu items
+    // Function to narrow down menu items based on search term
     ctrl.narrowDown = function() {
       if (ctrl.searchTerm.trim() === "") {
         ctrl.found = []; // Clear results if search term is empty
         return;
       }
+
       MenuSearchService.getMatchedMenuItems(ctrl.searchTerm)
         .then(function(result) {
           ctrl.found = result;
         });
     };
 
-    // Function to remove unwanted item
+    // Function to remove unwanted item from the found list
     ctrl.removeItem = function(index) {
       ctrl.found.splice(index, 1);
     };
   }
 
-  // Service to get matched menu items from the server
+  // Service to fetch matched menu items from the server
   MenuSearchService.$inject = ['$http'];
   function MenuSearchService($http) {
     var service = this;
@@ -44,7 +45,7 @@
         var foundItems = [];
         var menuItems = response.data;
 
-        // Loop through menu items and check if description matches
+        // Loop through menu items and check if description contains the search term
         for (var i = 0; i < menuItems.length; i++) {
           if (menuItems[i].description.toLowerCase().includes(searchTerm.toLowerCase())) {
             foundItems.push(menuItems[i]);
