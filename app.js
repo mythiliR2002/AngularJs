@@ -1,58 +1,43 @@
-(function() {
-  'use strict';
+const menuData = {
+  chicken: [
+    { name: 'Chicken Biriyani', price: 270 },
+    { name: 'Chicken Fried Rice', price: 130 },
+    { name: 'Chicken Noodles', price: 130 },
+    { name: 'Chicken Kabab', price: 100 }
+  ],
+  mutton: [
+    { name: 'Mutton Biriyani', price: 270 },
+    { name: 'Mutton Fried Rice', price: 130 },
+    { name: 'Mutton Noodles', price: 130 },
+    { name: 'Mutton Kabab', price: 100 }
+  ]
+};
 
-  angular.module('NarrowItDownApp', [])
-    .controller('NarrowItDownController', NarrowItDownController)
-    .service('MenuSearchService', MenuSearchService);
+const submitBtn = document.getElementById('submitBtn');
+const foodInput = document.getElementById('foodInput');
+const menuList = document.getElementById('menuList');
 
-  // Controller
-  NarrowItDownController.$inject = ['MenuSearchService'];
-  function NarrowItDownController(MenuSearchService) {
-    var ctrl = this;
+submitBtn.addEventListener('click', function() {
+  const foodType = foodInput.value.toLowerCase();
+  menuList.innerHTML = ''; // Clear previous results
 
-    ctrl.searchTerm = "";
-    ctrl.found = [];
+  if (menuData[foodType]) {
+    menuData[foodType].forEach(item => {
+      const menuItem = document.createElement('li');
+      menuItem.classList.add('menu-item');
 
-    // Function to narrow down menu items based on search term
-    ctrl.narrowDown = function() {
-      if (ctrl.searchTerm.trim() === "") {
-        ctrl.found = []; // Clear results if search term is empty
-        return;
-      }
+      menuItem.innerHTML = `
+        <span>${item.name} - ${item.price} Rupees</span>
+        <button onclick="hideItem(this)">I don't want this</button>
+      `;
 
-      MenuSearchService.getMatchedMenuItems(ctrl.searchTerm)
-        .then(function(result) {
-          ctrl.found = result;
-        });
-    };
-
-    // Function to remove unwanted item from the found list
-    ctrl.removeItem = function(index) {
-      ctrl.found.splice(index, 1);
-    };
+      menuList.appendChild(menuItem);
+    });
+  } else {
+    menuList.innerHTML = '<li>No menu items found for this type of food!</li>';
   }
+});
 
-  // Service to fetch matched menu items from the server
-  MenuSearchService.$inject = ['$http'];
-  function MenuSearchService($http) {
-    var service = this;
-
-    service.getMatchedMenuItems = function(searchTerm) {
-      return $http({
-        method: 'GET',
-        url: 'https://coursera-jhu-default-rtdb.firebaseio.com/menu_items.json'
-      }).then(function(response) {
-        var foundItems = [];
-        var menuItems = response.data;
-
-        // Loop through menu items and check if description contains the search term
-        for (var i = 0; i < menuItems.length; i++) {
-          if (menuItems[i].description.toLowerCase().includes(searchTerm.toLowerCase())) {
-            foundItems.push(menuItems[i]);
-          }
-        }
-        return foundItems;
-      });
-    };
-  }
-})();
+function hideItem(button) {
+  button.parentElement.style.display = 'none';
+}
