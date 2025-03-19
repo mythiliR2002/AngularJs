@@ -1,39 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="NarrowItDownApp">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Narrow It Down</title>
+  <title>Food Menu Finder</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body ng-controller="NarrowItDownController as ctrl">
+<body>
+
   <div class="container">
-    <h1>Search Menu Items</h1>
+    <h2>Food Menu Finder</h2>
+    <input type="text" id="foodInput" placeholder="Enter food type (e.g., chicken or mutton)">
+    <button id="submitBtn">Narrow It Down</button>
 
-    <!-- Search Box and Button -->
-    <div class="search-bar">
-      <input type="text" ng-model="ctrl.searchTerm" placeholder="Search for an item (e.g., chicken, vegetarian, spicy)">
-      <button ng-click="ctrl.narrowDown()">Narrow It Down For Me!</button>
-    </div>
-
-    <!-- Display Found Items -->
-    <div class="menu-list" ng-if="ctrl.found.length > 0">
-      <h3>Found Items:</h3>
-      <ul>
-        <li ng-repeat="item in ctrl.found">
-          <span>{{item.name}}, {{item.short_name}}, {{item.description}}</span>
-          <button ng-click="ctrl.removeItem($index)">Don't want this one!</button>
-        </li>
-      </ul>
-    </div>
-
-    <!-- No Results Found -->
-    <div ng-if="ctrl.found.length === 0 && ctrl.searchTerm !== ''">
-      <p>Nothing found for "{{ctrl.searchTerm}}"</p>
-    </div>
+    <ul class="menu-list" id="menuList"></ul>
   </div>
 
-  <script src="https://code.angularjs.org/1.8.2/angular.min.js"></script>
-  <script src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
