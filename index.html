@@ -12,7 +12,7 @@
 
     <!-- Search Box and Button -->
     <div class="search-bar">
-      <input type="text" ng-model="ctrl.searchTerm" placeholder="Enter a search term">
+      <input type="text" ng-model="ctrl.searchTerm" placeholder="Search for an item (e.g., chicken, vegetarian, spicy)">
       <button ng-click="ctrl.narrowDown()">Narrow It Down For Me!</button>
     </div>
 
@@ -29,7 +29,7 @@
 
     <!-- No Results Found -->
     <div ng-if="ctrl.found.length === 0 && ctrl.searchTerm !== ''">
-      <p>Nothing found</p>
+      <p>Nothing found for "{{ctrl.searchTerm}}"</p>
     </div>
   </div>
 
