@@ -3,8 +3,7 @@
 
   angular.module('NarrowItDownApp', [])
     .controller('NarrowItDownController', NarrowItDownController)
-    .service('MenuSearchService', MenuSearchService)
-    .directive('foundItems', FoundItemsDirective);
+    .service('MenuSearchService', MenuSearchService);
 
   // Controller
   NarrowItDownController.$inject = ['MenuSearchService'];
@@ -17,7 +16,7 @@
     // Function to narrow down menu items
     ctrl.narrowDown = function() {
       if (ctrl.searchTerm.trim() === "") {
-        ctrl.found = [];
+        ctrl.found = []; // Clear results if search term is empty
         return;
       }
       MenuSearchService.getMatchedMenuItems(ctrl.searchTerm)
@@ -54,18 +53,5 @@
         return foundItems;
       });
     };
-  }
-
-  // Directive for displaying found items
-  function FoundItemsDirective() {
-    var ddo = {
-      restrict: 'E',
-      templateUrl: 'found-items.html',
-      scope: {
-        found: '<',
-        onRemove: '&'
-      }
-    };
-    return ddo;
   }
 })();
