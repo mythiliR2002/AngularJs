@@ -3,26 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu Search App </title>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <title>Narrow It Down</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <div class="container" ng-controller="NarrowItDownController as ctrl">
-    <h1>Menu Search</h1>
-    <input type="text" ng-model="ctrl.searchTerm" placeholder="Search for a dish" />
-    <button ng-click="ctrl.narrowDown()">Narrow It Down For Me!</button>
+<body ng-controller="NarrowItDownController as ctrl">
+  <div class="container">
+    <h1>Search Menu Items</h1>
 
-    <div ng-if="ctrl.foundItems.length === 0 && ctrl.searchTerm.length > 0">
-      <p>Nothing found!</p>
+    <!-- Search Box and Button -->
+    <div class="search-bar">
+      <input type="text" ng-model="ctrl.searchTerm" placeholder="Enter a search term">
+      <button ng-click="ctrl.narrowDown()">Narrow It Down For Me!</button>
     </div>
 
-    <div ng-if="ctrl.foundItems.length > 0">
-      <h2>Found Items:</h2>
-      <found-items found="ctrl.foundItems" on-remove="ctrl.removeItem(index)"></found-items>
+    <!-- Display Found Items -->
+    <div class="menu-list" ng-if="ctrl.found.length > 0">
+      <h3>Found Items:</h3>
+      <ul>
+        <li ng-repeat="item in ctrl.found">
+          <span>{{item.name}}, {{item.short_name}}, {{item.description}}</span>
+          <button ng-click="ctrl.removeItem($index)">Don't want this one!</button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- No Results Found -->
+    <div ng-if="ctrl.found.length === 0 && ctrl.searchTerm !== ''">
+      <p>Nothing found</p>
     </div>
   </div>
 
+  <script src="https://code.angularjs.org/1.8.2/angular.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
