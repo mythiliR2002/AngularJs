@@ -1,57 +1,81 @@
-(function() {
-  'use strict';
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  padding: 20px;
+  margin: 0;
+}
 
-  angular.module('NarrowItDownApp', [])
-    .controller('NarrowItDownController', NarrowItDownController)
-    .service('MenuSearchService', MenuSearchService);
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-  // Controller
-  NarrowItDownController.$inject = ['MenuSearchService'];
-  function NarrowItDownController(MenuSearchService) {
-    var ctrl = this;
+h1 {
+  text-align: center;
+  color: #333;
+}
 
-    ctrl.searchTerm = "";
-    ctrl.found = [];
+.search-bar {
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-    // Function to narrow down menu items
-    ctrl.narrowDown = function() {
-      if (ctrl.searchTerm.trim() === "") {
-        ctrl.found = []; // Clear results if search term is empty
-        return;
-      }
-      MenuSearchService.getMatchedMenuItems(ctrl.searchTerm)
-        .then(function(result) {
-          ctrl.found = result;
-        });
-    };
+.search-bar input {
+  padding: 8px;
+  font-size: 16px;
+  margin-right: 10px;
+  width: 60%;
+}
 
-    // Function to remove unwanted item
-    ctrl.removeItem = function(index) {
-      ctrl.found.splice(index, 1);
-    };
-  }
+.search-bar button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
 
-  // Service to get matched menu items from the server
-  MenuSearchService.$inject = ['$http'];
-  function MenuSearchService($http) {
-    var service = this;
+.search-bar button:hover {
+  background-color: #45a049;
+}
 
-    service.getMatchedMenuItems = function(searchTerm) {
-      return $http({
-        method: 'GET',
-        url: 'https://coursera-jhu-default-rtdb.firebaseio.com/menu_items.json'
-      }).then(function(response) {
-        var foundItems = [];
-        var menuItems = response.data;
+.menu-list {
+  margin-top: 20px;
+}
 
-        // Loop through menu items and check if description matches
-        for (var i = 0; i < menuItems.length; i++) {
-          if (menuItems[i].description.toLowerCase().includes(searchTerm.toLowerCase())) {
-            foundItems.push(menuItems[i]);
-          }
-        }
-        return foundItems;
-      });
-    };
-  }
-})();
+.menu-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.menu-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.menu-list li span {
+  flex-grow: 1;
+}
+
+.menu-list button {
+  padding: 5px 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-list button:hover {
+  background-color: #e43f3f;
+}
+
+p {
+  text-align: center;
+  color: #ff4d4d;
+}
