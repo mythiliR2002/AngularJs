@@ -34,3 +34,12 @@ a:hover {
 .btn:hover {
     background-color: #004d40;
 }
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 10px 0;
+}
