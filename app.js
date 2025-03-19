@@ -1,43 +1,86 @@
-const menuData = {
-  chicken: [
-    { name: 'Chicken Biriyani', price: 270 },
-    { name: 'Chicken Fried Rice', price: 130 },
-    { name: 'Chicken Noodles', price: 130 },
-    { name: 'Chicken Kabab', price: 100 }
-  ],
-  mutton: [
-    { name: 'Mutton Biriyani', price: 270 },
-    { name: 'Mutton Fried Rice', price: 130 },
-    { name: 'Mutton Noodles', price: 130 },
-    { name: 'Mutton Kabab', price: 100 }
-  ]
-};
+(function() {
+    // Define the AngularJS app and its dependencies
+    angular.module('MenuApp', ['ui.router'])
+        .config(RoutesConfig)
+        .service('MenuDataService', MenuDataService)
+        .component('categories', {
+            templateUrl: 'categories.component.html',
+            bindings: {
+                categories: '<'
+            }
+        })
+        .component('items', {
+            templateUrl: 'items.component.html',
+            bindings: {
+                items: '<'
+            }
+        });
 
-const submitBtn = document.getElementById('submitBtn');
-const foodInput = document.getElementById('foodInput');
-const menuList = document.getElementById('menuList');
+    // Routing configuration
+    RoutesConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
+    function RoutesConfig($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/');
 
-submitBtn.addEventListener('click', function() {
-  const foodType = foodInput.value.toLowerCase();
-  menuList.innerHTML = ''; // Clear previous results
+        $stateProvider
+        .state('home', {
+            url: '/',
+            template: '<h1>Welcome to our Restaurant!</h1><a ui-sref="categories" class="btn">View Categories</a>'
+        })
+        .state('categories', {
+            url: '/categories',
+            template: '<categories categories="$ctrl.categories"></categories>',
+            controller: CategoriesController,
+            controllerAs: '$ctrl',
+            resolve: {
+                categories: ['MenuDataService', function(MenuDataService) {
+                    return MenuDataService.getAllCategories();
+                }]
+            }
+        })
+        .state('items', {
+            url: '/items/{categoryShortName}',
+            template: '<items items="$ctrl.items"></items>',
+            controller: ItemsController,
+            controllerAs: '$ctrl',
+            resolve: {
+                items: ['$stateParams', 'MenuDataService', function($stateParams, MenuDataService) {
+                    return MenuDataService.getItemsForCategory($stateParams.categoryShortName);
+                }]
+            }
+        });
+    }
 
-  if (menuData[foodType]) {
-    menuData[foodType].forEach(item => {
-      const menuItem = document.createElement('li');
-      menuItem.classList.add('menu-item');
+    // Categories Controller
+    CategoriesController.$inject = ['categories'];
+    function CategoriesController(categories) {
+        var $ctrl = this;
+        $ctrl.categories = categories;
+    }
 
-      menuItem.innerHTML = `
-        <span>${item.name} - ${item.price} Rupees</span>
-        <button onclick="hideItem(this)">I don't want this</button>
-      `;
+    // Items Controller
+    ItemsController.$inject = ['items'];
+    function ItemsController(items) {
+        var $ctrl = this;
+        $ctrl.items = items;
+    }
 
-      menuList.appendChild(menuItem);
-    });
-  } else {
-    menuList.innerHTML = '<li>No menu items found for this type of food!</li>';
-  }
-});
+    // MenuDataService to fetch data from the API
+    MenuDataService.$inject = ['$http'];
+    function MenuDataService($http) {
+        var service = this;
 
-function hideItem(button) {
-  button.parentElement.style.display = 'none';
-}
+        service.getAllCategories = function() {
+            return $http.get('https://coursera-jhu-default-rtdb.firebaseio.com/categories.json')
+                .then(function(response) {
+                    return response.data;
+                });
+        };
+
+        service.getItemsForCategory = function(categoryShortName) {
+            return $http.get('https://coursera-jhu-default-rtdb.firebaseio.com/menu_items/' + categoryShortName + '.json')
+                .then(function(response) {
+                    return response.data;
+                });
+        };
+    }
+})();
