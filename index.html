@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="MenuApp">
+<html lang="en" ng-app="restaurantApp">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Menu</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Sign Up</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.angularjs.org/1.8.2/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
 </head>
 <body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#/sign-up">Sign Up</a></li>
+        <li><a href="#/my-info">My Info</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <div ui-view></div>
+  <div ng-view></div>
 
-    <script src="menuapp.module.js"></script>
-    <script src="data.module.js"></script>
-    <script src="menudata.service.js"></script>
-    <script src="categories.component.js"></script>
-    <script src="items.component.js"></script>
-    <script src="routes.js"></script>
-
+  <script src="app.js"></script>
 </body>
 </html>
