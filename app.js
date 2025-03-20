@@ -19,6 +19,20 @@
     .service('userInfoService', function($http) {
       var userInfo = {};
 
+      // Randomly created menu items from L1 to L10
+      const menuItems = {
+        "L1": { name: "Spicy Chicken", category: "Chicken", description: "A flavorful spicy chicken dish.", image: "https://via.placeholder.com/100?text=Chicken" },
+        "L2": { name: "Mutton Curry", category: "Mutton", description: "A rich and tender mutton curry.", image: "https://via.placeholder.com/100?text=Mutton" },
+        "L3": { name: "Egg Bhurji", category: "Egg", description: "Scrambled eggs with spices.", image: "https://via.placeholder.com/100?text=Egg" },
+        "L4": { name: "Grilled Chicken", category: "Chicken", description: "Tender grilled chicken with herbs.", image: "https://via.placeholder.com/100?text=Grilled+Chicken" },
+        "L5": { name: "Mutton Biryani", category: "Mutton", description: "Fragrant biryani with succulent mutton.", image: "https://via.placeholder.com/100?text=Mutton+Biryani" },
+        "L6": { name: "Omelette", category: "Egg", description: "Fluffy and delicious omelette.", image: "https://via.placeholder.com/100?text=Omelette" },
+        "L7": { name: "BBQ Chicken", category: "Chicken", description: "Smoky BBQ chicken wings.", image: "https://via.placeholder.com/100?text=BBQ+Chicken" },
+        "L8": { name: "Mutton Kebab", category: "Mutton", description: "Succulent mutton kebabs.", image: "https://via.placeholder.com/100?text=Mutton+Kebab" },
+        "L9": { name: "Egg Fried Rice", category: "Egg", description: "Stir-fried rice with eggs.", image: "https://via.placeholder.com/100?text=Egg+Fried+Rice" },
+        "L10": { name: "Chicken Tikka", category: "Chicken", description: "Tender chicken pieces marinated in spices.", image: "https://via.placeholder.com/100?text=Chicken+Tikka" }
+      };
+
       this.saveUserInfo = function(user) {
         userInfo = user;
       };
@@ -28,18 +42,7 @@
       };
 
       this.checkMenuItem = function(menuNumber) {
-        return $http.get('https://coursera-jhu-default-rtdb.firebaseio.com/menu_items.json')
-          .then(function(response) {
-            var menuItems = response.data;
-            for (var category in menuItems) {
-              for (var item in menuItems[category].menu_items) {
-                if (menuItems[category].menu_items[item].short_name === menuNumber) {
-                  return menuItems[category].menu_items[item];
-                }
-              }
-            }
-            return null;
-          });
+        return menuItems[menuNumber] || null;
       };
     })
     .controller('SignUpController', function($scope, userInfoService) {
@@ -57,31 +60,27 @@
 
       $scope.submitForm = function() {
         if ($scope.signUpForm.$valid) {
-          userInfoService.checkMenuItem($scope.user.favoriteMenuNumber)
-            .then(function(response) {
-              if (response) {
-                userInfoService.saveUserInfo($scope.user);
-                $scope.formSubmitted = true;
-                $scope.successMessage = 'Your information has been saved.';
-              } else {
-                $scope.errorMessage = 'No such menu number exists.';
-                $scope.favoriteMenuItem = null;
-              }
-            });
+          var menuItem = userInfoService.checkMenuItem($scope.user.favoriteMenuNumber);
+          if (menuItem) {
+            userInfoService.saveUserInfo($scope.user);
+            $scope.formSubmitted = true;
+            $scope.successMessage = 'Your information has been saved.';
+          } else {
+            $scope.errorMessage = 'No such menu number exists.';
+            $scope.favoriteMenuItem = null;
+          }
         }
       };
 
       $scope.validateFavoriteMenuItem = function() {
         if ($scope.user.favoriteMenuNumber) {
-          userInfoService.checkMenuItem($scope.user.favoriteMenuNumber)
-            .then(function(response) {
-              $scope.favoriteMenuItem = response;
-              if (!response) {
-                $scope.errorMessage = 'No such menu number exists.';
-              } else {
-                $scope.errorMessage = '';
-              }
-            });
+          var menuItem = userInfoService.checkMenuItem($scope.user.favoriteMenuNumber);
+          $scope.favoriteMenuItem = menuItem;
+          if (!menuItem) {
+            $scope.errorMessage = 'No such menu number exists.';
+          } else {
+            $scope.errorMessage = '';
+          }
         }
       };
     })
@@ -93,12 +92,10 @@
         $scope.message = 'Welcome, ' + $scope.user.firstName + ' ' + $scope.user.lastName;
         $scope.favoriteMenuItem = null;
         if ($scope.user.favoriteMenuNumber) {
-          userInfoService.checkMenuItem($scope.user.favoriteMenuNumber)
-            .then(function(response) {
-              if (response) {
-                $scope.favoriteMenuItem = response;
-              }
-            });
+          var menuItem = userInfoService.checkMenuItem($scope.user.favoriteMenuNumber);
+          if (menuItem) {
+            $scope.favoriteMenuItem = menuItem;
+          }
         }
       }
     });
