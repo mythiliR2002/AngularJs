@@ -89,14 +89,4 @@
       if (!$scope.user.firstName) {
         $scope.message = 'Not Signed Up Yet. <a href="#/sign-up">Sign up Now!</a>';
       } else {
-        $scope.message = 'Welcome, ' + $scope.user.firstName + ' ' + $scope.user.lastName;
-        $scope.favoriteMenuItem = null;
-        if ($scope.user.favoriteMenuNumber) {
-          var menuItem = userInfoService.checkMenuItem($scope.user.favoriteMenuNumber);
-          if (menuItem) {
-            $scope.favoriteMenuItem = menuItem;
-          }
-        }
-      }
-    });
-})();
+        $scope.message
