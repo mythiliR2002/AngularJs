@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Info</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <button id="signInBtn">Sign In</button>
+            <button id="myInfoBtn">My Info</button>
+        </nav>
+    </header>
+
+    <h2>Your Information</h2>
+    <div id="userInfo"></div>
+
+    <script>
+        // Fetch user info from localStorage and display
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        const userInfoDiv = document.getElementById('userInfo');
+
+        if (userInfo) {
+            let foodName = getFoodName(userInfo.favouriteFood);
+            userInfoDiv.innerHTML = `
+                <p>Name: ${userInfo.name}</p>
+                <p>Phone: ${userInfo.phone}</p>
+                <p>Email: ${userInfo.email}</p>
+                <p>Favourite Food: ${userInfo.favouriteFood} (${foodName})</p>
+            `;
+        } else {
+            userInfoDiv.innerHTML = "<p>No information available.</p>";
+        }
+
+        function getFoodName(foodNumber) {
+            const foodNames = {
+                L1: 'Chicken',
+                L2: 'Pizza',
+                L3: 'Pasta',
+                L4: 'Burger',
+                L5: 'Salad',
+                L6: 'Sushi',
+                L7: 'Steak',
+                L8: 'Ice Cream',
+                L9: 'Fries',
+                L10: 'Tacos'
+            };
+
+            return foodNames[foodNumber] || 'Unknown';
+        }
+
+        document.getElementById('signInBtn').addEventListener('click', () => {
+            location.reload(); // Refresh the page when "Sign In" is clicked
+        });
+    </script>
+</body>
+</html>
