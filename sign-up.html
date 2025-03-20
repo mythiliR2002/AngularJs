@@ -1,0 +1,28 @@
+<div class="container">
+  <h2>Sign Up</h2>
+  <form name="signUpForm" ng-submit="submitForm()" novalidate>
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" ng-model="user.firstName" required>
+    <div class="error" ng-show="signUpForm.firstName.$touched && signUpForm.firstName.$invalid">First Name is required.</div>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" ng-model="user.lastName" required>
+    <div class="error" ng-show="signUpForm.lastName.$touched && signUpForm.lastName.$invalid">Last Name is required.</div>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" ng-model="user.email" required>
+    <div class="error" ng-show="signUpForm.email.$touched && signUpForm.email.$invalid">A valid email is required.</div>
+
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" ng-model="user.phone" required>
+    <div class="error" ng-show="signUpForm.phone.$touched && signUpForm.phone.$invalid">Phone number is required.</div>
+
+    <label for="favoriteMenuNumber">Favorite Menu Number:</label>
+    <input type="text" id="favoriteMenuNumber" ng-model="user.favoriteMenuNumber" ng-blur="validateFavoriteMenuItem()" required>
+    <div class="error" ng-show="errorMessage">{{errorMessage}}</div>
+
+    <button type="submit" ng-disabled="signUpForm.$invalid">Submit</button>
+
+    <div class="success" ng-show="formSubmitted">{{successMessage}}</div>
+  </form>
+</div>
