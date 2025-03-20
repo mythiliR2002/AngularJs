@@ -17,7 +17,7 @@
     <input type="text" id="phone" ng-model="user.phone" required>
     <div class="error" ng-show="signUpForm.phone.$touched && signUpForm.phone.$invalid">Phone number is required.</div>
 
-    <label for="favoriteMenuNumber">Favorite Menu Number (e.g., L1, L2):</label>
+    <label for="favoriteMenuNumber">Favorite Menu Number:</label>
     <input type="text" id="favoriteMenuNumber" ng-model="user.favoriteMenuNumber" ng-blur="validateFavoriteMenuItem()" required>
     <div class="error" ng-show="errorMessage">{{errorMessage}}</div>
 
